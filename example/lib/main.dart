@@ -42,10 +42,13 @@ class _MyAppState extends State<MyApp> {
                   onDetectionTyped: (text) {
                     print(text);
                   },
+                  decorateAtSign: true,
 
                   /// Called when detection is fully typed
                   onDetectionFinished: () {
                     print("detection finished");
+                    final List<String> hashTags = extractHashTags("#Hello World #Flutter Dart @sad #Thank you");
+                    print(hashTags);
                   },
                   maxLines: null,
                 ),
