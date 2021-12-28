@@ -7,26 +7,18 @@ import 'detector/detector.dart';
 /// Check if the text has hashTags
 bool hasHashTags(String value) {
   final decoratedTextColor = Colors.blue;
-  final detector = Detector(
-      textStyle: TextStyle(),
-      decoratedStyle: TextStyle(color: decoratedTextColor));
+  final detector = Detector(textStyle: TextStyle(), decoratedStyle: TextStyle(color: decoratedTextColor));
   final result = detector.getDetections(value);
-  final detections = result
-      .where((detection) => detection.style!.color == decoratedTextColor)
-      .toList();
+  final detections = result.where((detection) => detection.style!.color == decoratedTextColor).toList();
   return detections.isNotEmpty;
 }
 
 /// Extract hashTags from the text
-List<String> extractHashTags(String value) {
+List<String> extractHashTags(String value, {bool includeAtSign = false}) {
   final decoratedTextColor = Colors.blue;
-  final detector = Detector(
-      textStyle: TextStyle(),
-      decoratedStyle: TextStyle(color: decoratedTextColor));
+  final detector = Detector(textStyle: TextStyle(), decoratedStyle: TextStyle(color: decoratedTextColor), decorateAtSign: includeAtSign);
   final detections = detector.getDetections(value);
-  final taggedDetections = detections
-      .where((detection) => detection.style!.color == decoratedTextColor)
-      .toList();
+  final taggedDetections = detections.where((detection) => detection.style!.color == decoratedTextColor).toList();
   final result = taggedDetections.map((decoration) {
     final text = decoration.range.textInside(value);
     return text.trim();
@@ -44,11 +36,7 @@ TextSpan getHashTagTextSpan({
   Function(String)? onTap,
   bool decorateAtSign = false,
 }) {
-  final decorations = Detector(
-          decoratedStyle: decoratedStyle,
-          textStyle: basicStyle,
-          decorateAtSign: decorateAtSign)
-      .getDetections(source);
+  final decorations = Detector(decoratedStyle: decoratedStyle, textStyle: basicStyle, decorateAtSign: decorateAtSign).getDetections(source);
   if (decorations.isEmpty) {
     return TextSpan(text: source, style: basicStyle);
   } else {
